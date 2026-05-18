@@ -1,0 +1,360 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.Doctor>
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<!-- HERO -->
+<section class="hero-section text-white text-center">
+
+    <div class="container">
+
+        <h1 class="display-4 fw-bold mb-3">
+            Find the Best Doctors Near You
+        </h1>
+
+        <p class="lead mb-4">
+            Book appointments with top specialists instantly.
+        </p>
+
+        <a href="@Url.Action("Create","Appointments")"
+           class="btn btn-light btn-lg shadow">
+            <i class="bi bi-calendar-check"></i> Book Appointment
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<section class="container py-5">
+
+    <h2 class="text-center text-primary fw-bold mb-4">
+        Our Medical Specialists
+    </h2>
+
+
+    <!-- SEARCH -->
+    <div class="search-box mb-4">
+
+        <i class="bi bi-search"></i>
+
+        <input type="text"
+               id="doctorSearch"
+               class="form-control"
+               placeholder="Search doctor by name...">
+
+    </div>
+
+
+    <!-- FILTER -->
+    <div class="text-center mb-4">
+
+        <button class="filter-btn active" data-filter="">All</button>
+
+        @foreach (var spec in Model
+        .Where(d => d.Specialization != null)
+        .Select(d => d.Specialization.Name)
+        .Distinct())
+        {
+            <button class="filter-btn" data-filter="@spec">@spec</button>
+        }
+
+    </div>
+
+
+    <div class="row">
+
+        @foreach (var doctor in Model)
+        {
+
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 doctor-item"
+                 data-name="@doctor.Name.ToLower()"
+                 data-specialization="@(doctor.Specialization!=null?doctor.Specialization.Name:"")">
+
+                <div class="card doctor-card text-center border-0 shadow h-100">
+
+                    <div class="card-body">
+
+                        <img src="@(!string.IsNullOrEmpty(doctor.ImagePath)?Url.Content(doctor.ImagePath):Url.Content("~/Images/Doctors/default.png"))"
+                             class="doctor-img mb-3">
+
+                        <h5 class="fw-bold">@doctor.Name</h5>
+
+                        <p class="text-muted">
+                            @(doctor.Specialization!=null?doctor.Specialization.Name:"No Specialization")
+                        </p>
+
+
+                        <!-- RATING -->
+                        <div class="rating mb-2">
+
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+
+                            <span class="small text-muted">(4.5)</span>
+
+                        </div>
+
+
+                        <!-- AVAILABLE TIME -->
+                        @*<div class="slots mb-3">
+
+                            <span class="badge bg-success">10:00 AM</span>
+                            <span class="badge bg-success">12:30 PM</span>
+                            <span class="badge bg-success">03:00 PM</span>
+
+                        </div>*@
+
+
+                        <a href="@Url.Action("Details","Doctors",new{id=doctor.Id})"
+                           class="btn btn-outline-primary btn-sm">
+                            View Profile
+                        </a>
+
+                        @*<button class="btn btn-primary btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#appointmentModal"
+                                data-doctor="@doctor.Name">
+                            Quick Book
+                        </button>*@
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+
+    </div>
+
+</section>
+
+
+
+<!-- QUICK APPOINTMENT MODAL -->
+
+@*<div class="modal fade" id="appointmentModal">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Quick Appointment
+                </h5>
+
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Doctor</label>
+
+                        <input type="text"
+                               id="modalDoctor"
+                               class="form-control"
+                               readonly>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Patient Name</label>
+
+                        <input type="text"
+                               class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">Appointment Date</label>
+
+                        <input type="date"
+                               class="form-control">
+
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+                        Confirm Appointment
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>*@
+
+
+
+<style>
+
+    /* HERO */
+
+    .hero-section {
+        background: linear-gradient(rgba(13,110,253,0.85),rgba(111,66,193,0.85)), url('/Images/Back.jpg');
+        background-size: cover;
+        background-position: center;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+    }
+
+
+
+    /* SEARCH */
+
+    .search-box {
+        max-width: 600px;
+        margin: auto;
+        position: relative;
+    }
+
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            height: 50px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+
+
+    /* FILTER */
+
+    .filter-btn {
+        border: none;
+        padding: 8px 18px;
+        margin: 5px;
+        border-radius: 25px;
+        background: #eee;
+        transition: .3s;
+    }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #0d6efd;
+            color: white;
+        }
+
+
+
+    /* DOCTOR CARD */
+
+    .doctor-card {
+        border-radius: 18px;
+        transition: .35s;
+    }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+    .doctor-img {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #f1f1f1;
+    }
+
+    .slots .badge {
+        margin: 2px;
+    }
+</style>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    const searchInput = document.getElementById("doctorSearch");
+    const doctors = document.querySelectorAll(".doctor-item");
+    const filters = document.querySelectorAll(".filter-btn");
+
+    let selectedSpec = "";
+
+
+    function filterDoctors() {
+
+        let search = searchInput.value.toLowerCase();
+
+        doctors.forEach(doc => {
+
+            let name = doc.getAttribute("data-name");
+            let spec = doc.getAttribute("data-specialization");
+
+            let matchName = name.includes(search);
+            let matchSpec = selectedSpec == "" || spec == selectedSpec;
+
+            doc.style.display = (matchName && matchSpec) ? "block" : "none";
+
+        });
+
+    }
+
+
+    searchInput.addEventListener("keyup", filterDoctors);
+
+
+    filters.forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            filters.forEach(b => b.classList.remove("active"));
+
+            this.classList.add("active");
+
+            selectedSpec = this.getAttribute("data-filter");
+
+            filterDoctors();
+
+        });
+
+    });
+
+
+    ///* QUICK BOOK */
+
+    //var modal = document.getElementById('appointmentModal');
+
+    //modal.addEventListener('show.bs.modal', function (event) {
+
+    //    var button = event.relatedTarget;
+
+    //    var doctor = button.getAttribute('data-doctor');
+
+    //    document.getElementById('modalDoctor').value = doctor;
+
+    //});
+
+</script>

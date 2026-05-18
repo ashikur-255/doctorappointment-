@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Doctor Login";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4 mx-auto" style="max-width:420px">
+
+        <h3 class="text-center text-primary mb-4">
+            Doctor Portal Login
+        </h3>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+
+                <label class="form-label">Registration Number</label>
+
+                <input type="text"
+                       name="registrationNo"
+                       class="form-control"
+                       placeholder="Enter Doctor Registration Number"
+                       required />
+
+            </div>
+
+            <button class="btn btn-primary w-100">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

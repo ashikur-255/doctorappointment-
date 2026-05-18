@@ -1,0 +1,138 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+
+@{
+    ViewBag.Title = "Edit Doctor";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h4><i class="bi bi-pencil-square"></i> Edit Doctor</h4>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Edit", "Doctors", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <!-- Doctor Name -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Hospital Name -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.HospitalName, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.HospitalName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.HospitalName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Registration Number -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.RegistrationNo, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.RegistrationNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.RegistrationNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Degree -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.Degree, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.Degree, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Degree, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Visited Time -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.VisitedTime, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        <input type="time"
+                               class="form-control"
+                               name="VisitedTime"
+                               value="@(Model.VisitedTime.HasValue ? Model.VisitedTime.Value.ToString(@"hh\:mm") : "")" />
+                        @Html.ValidationMessageFor(model => model.VisitedTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Experience Years -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.ExperienceYears, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.ExperienceYears, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.ExperienceYears, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Consultation Fee -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.ConsultationFee, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.ConsultationFee, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.ConsultationFee, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.IsAvailable, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.IsAvailable, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="IsAvailable">Available</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Joining Date -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.JoiningDate, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(m => m.JoiningDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(m => m.JoiningDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Upload Photo -->
+                <div class="mb-3 row">
+                    @Html.Label("Upload New Photo", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        <input type="file" name="imageFile" class="form-control mb-2" />
+                        @if (!string.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <img src="@Url.Content(Model.ImagePath)" class="img-thumbnail" style="height:120px;" alt="Doctor Photo" />
+                        }
+                    </div>
+                </div>
+
+                <!-- Specialization -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(m => m.SpecializationId, "Specialization", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.DropDownList("SpecializationId", (SelectList)ViewBag.SpecializationId, "-- Select Specialization --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(m => m.SpecializationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-start">
+                    <input type="submit" value="Save Changes" class="btn btn-warning me-2" />
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

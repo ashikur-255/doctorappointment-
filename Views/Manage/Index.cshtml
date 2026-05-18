@@ -1,0 +1,101 @@
+﻿@model DoctorAppointmentSystem.Models.IndexViewModel
+
+@{
+    ViewBag.Title = "Account Settings";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <!-- Header -->
+                <div class="card-header bg-dark text-white text-center rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-gear"></i> Account Settings
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    @if (!String.IsNullOrEmpty(ViewBag.StatusMessage))
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.StatusMessage
+                        </div>
+                    }
+
+                    <p class="text-muted mb-4">
+                        Manage your account security and login settings.
+                    </p>
+
+                    <div class="list-group">
+
+                        <!-- Password -->
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <i class="bi bi-lock-fill text-primary"></i>
+                                <strong class="ms-2">Password</strong>
+                            </div>
+
+                            <div>
+                                @if (Model.HasPassword)
+                                {
+                                    @Html.ActionLink("Change Password", "ChangePassword", null,
+                                    new { @class = "btn btn-sm btn-primary" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Create Password", "SetPassword", null,
+                                    new { @class = "btn btn-sm btn-success" })
+                                }
+                            </div>
+
+                        </div>
+
+                        <!-- External Logins -->
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <i class="bi bi-box-arrow-in-right text-success"></i>
+                                <strong class="ms-2">External Logins</strong>
+                                <span class="badge bg-secondary ms-2">@Model.Logins.Count</span>
+                            </div>
+
+                            <div>
+                                @Html.ActionLink("Manage", "ManageLogins", null,
+                                new { @class = "btn btn-sm btn-outline-dark" })
+                            </div>
+
+                        </div>
+
+                        <!-- Two Factor Authentication -->
+                        <div class="list-group-item">
+
+                            <div class="mb-2">
+                                <i class="bi bi-shield-lock-fill text-danger"></i>
+                                <strong class="ms-2">Two-Factor Authentication</strong>
+                            </div>
+
+                            <p class="text-muted small mb-0">
+                                Two-factor authentication is not configured yet.
+                                It adds an extra layer of security to your account.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DoctorAppointmentSystem.Models.Appointment>
+
+@{
+    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<h3>Visited Patient History</h3>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Patient</th>
+        <th>Phone</th>
+        <th>Disease</th>
+        <th>Date</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+
+            <td>@item.Patient.Name</td>
+
+            <td>@item.Patient.Phone</td>
+
+            <td>@item.Patient.DiseaseDetails</td>
+
+            <td>@item.AppointmentDate.ToShortDateString()</td>
+
+        </tr>
+
+    }
+
+</table>

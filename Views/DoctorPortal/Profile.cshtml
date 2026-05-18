@@ -1,0 +1,25 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+
+@{
+    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<h3>Doctor Profile</h3>
+
+<div class="card p-4 shadow" style="max-width:500px">
+
+    <img src="@Url.Content(Model.ImagePath)" width="120" class="mb-3 rounded">
+
+    <h4>@Model.Name</h4>
+
+    <p><b>Hospital:</b> @Model.HospitalName</p>
+
+    <p><b>Specialization:</b> @Model.Specialization.Name</p>
+
+    <p><b>Experience:</b> @Model.ExperienceYears Years</p>
+
+    <p><b>Consultation Fee:</b> @Model.ConsultationFee</p>
+
+    <p><b>Visited Time:</b> @Model.VisitedTime</p>
+
+</div>

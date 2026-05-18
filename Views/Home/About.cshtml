@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "About Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <!-- HERO SECTION -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Doctor Appointment System</h1>
+        <p class="lead text-muted">
+            A modern platform designed to simplify doctor appointment booking,
+            patient management and healthcare administration.
+        </p>
+    </div>
+
+
+    <!-- ABOUT SECTION -->
+    <div class="row align-items-center mb-5">
+
+        <div class="col-md-6">
+            <h3 class="fw-bold">Who We Are</h3>
+
+            <p class="text-muted">
+                The Doctor Appointment System is designed to help hospitals,
+                clinics and medical professionals manage appointments
+                efficiently. Patients can easily find doctors,
+                check specializations and book appointments online.
+            </p>
+
+            <p class="text-muted">
+                Built with <strong>
+                    ASP.NET MVC, Entity Framework,
+                    SQL Server and Bootstrap
+                </strong>,
+                this system provides speed, security and a modern user experience.
+            </p>
+        </div>
+
+        <div class="col-md-6">
+            <img src="https://img.freepik.com/free-vector/doctor-character-background_1270-84.jpg"
+                 class="img-fluid rounded shadow"
+                 alt="Healthcare illustration">
+        </div>
+
+    </div>
+
+
+    <!-- SYSTEM STATISTICS -->
+    <div class="row text-center mb-5">
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h2 class="text-primary">@ViewBag.DoctorCount</h2>
+                    <p class="mb-0">Doctors</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h2 class="text-success">@ViewBag.PatientCount</h2>
+                    <p class="mb-0">Patients</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h2 class="text-danger">@ViewBag.AppointmentCount</h2>
+                    <p class="mb-0">Appointments</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h2 class="text-warning">@ViewBag.SpecializationCount</h2>
+                    <p class="mb-0">Specializations</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- SERVICES -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">Our Services</h2>
+        <p class="text-muted">Smart tools for managing healthcare operations.</p>
+    </div>
+
+    <div class="row text-center mb-5">
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body">
+                    <h4 class="text-primary">Doctor Management</h4>
+                    <p class="text-muted">
+                        Manage doctor profiles, specializations,
+                        and availability in one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body">
+                    <h4 class="text-primary">Online Appointment</h4>
+                    <p class="text-muted">
+                        Patients can quickly book appointments
+                        with available doctors.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100 border-0">
+                <div class="card-body">
+                    <h4 class="text-primary">Patient Records</h4>
+                    <p class="text-muted">
+                        Securely store patient data and appointment history.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- FEATURES -->
+    <div class="bg-light p-5 rounded shadow-sm mb-5">
+
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">System Features</h2>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">✔ Responsive User Interface</li>
+                    <li class="list-group-item">✔ Secure Database System</li>
+                    <li class="list-group-item">✔ Fast Appointment Booking</li>
+                    <li class="list-group-item">✔ Easy Navigation</li>
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">✔ Professional Admin Dashboard</li>
+                    <li class="list-group-item">✔ Doctor Specialization Management</li>
+                    <li class="list-group-item">✔ Appointment Scheduling</li>
+                    <li class="list-group-item">✔ Scalable Architecture</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MISSION & VISION -->
+    <div class="row mb-5">
+
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h4 class="text-primary fw-bold">Our Mission</h4>
+                    <p class="text-muted">
+                        To create a digital healthcare platform that simplifies
+                        appointment booking and improves hospital management efficiency.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <h4 class="text-primary fw-bold">Our Vision</h4>
+                    <p class="text-muted">
+                        To build intelligent healthcare systems that make
+                        medical services faster, smarter and more accessible.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- DEVELOPER -->
+    <div class="text-center p-4 bg-primary text-white rounded shadow">
+        <h4>Developed By</h4>
+        <p class="mb-0">
+            <strong>Ashikur Rahman</strong><br />
+            01708-588330<br />
+            ASP.NET MVC Developer 
+
+        </p>
+    </div>
+
+</div>

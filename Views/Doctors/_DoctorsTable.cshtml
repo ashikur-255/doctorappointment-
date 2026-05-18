@@ -1,0 +1,154 @@
+﻿@model PagedList.IPagedList<DoctorAppointmentSystem.Models.Doctor>
+
+<div class="card shadow border-0">
+    <div class="table-responsive">
+
+        <table class="table table-hover table-bordered align-middle text-center mb-0">
+
+            <thead style="background:#ffd800;color:#0d6efd">
+                <tr>
+
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Hospital</th>
+                    <th>Registration</th>
+                    <th>Degree</th>
+                    <th>Specialization</th>
+                    <th>Experience</th>
+                    <th>Fee</th>
+                    <th>Visited Time</th>
+                    <th>Status</th>
+                    <th>Joining Date</th>
+                    <th width="220">Actions</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="12" class="p-5 text-muted">
+                            No Doctors Found
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var doctor in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <img src="@(!string.IsNullOrEmpty(doctor.ImagePath)
+? Url.Content(doctor.ImagePath)
+: Url.Content("~/Images/Doctors/default.png"))"
+                                     class="rounded-circle border shadow-sm"
+                                     style="width:60px;height:60px;object-fit:cover" />
+                            </td>
+
+                            <td class="fw-bold text-primary">@doctor.Name</td>
+
+                            <td>@doctor.HospitalName</td>
+
+                            <td>@doctor.RegistrationNo</td>
+
+                            <td>@doctor.Degree</td>
+
+                            <td>@(doctor.Specialization?.Name ?? "N/A")</td>
+
+                            <td>
+                                <span class="badge bg-info">
+                                    @doctor.ExperienceYears Years
+                                </span>
+                            </td>
+
+                            <td class="fw-bold text-success">
+                                $@doctor.ConsultationFee
+                            </td>
+
+                            <td>
+                                @(doctor.VisitedTime.HasValue
+? DateTime.Today.Add(doctor.VisitedTime.Value).ToString("hh:mm tt")
+: "N/A")
+                            </td>
+
+                            <td>
+                                @if (doctor.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Not Available</span>
+                                }
+                            </td>
+
+                            <td>@doctor.JoiningDate.ToString("dd MMM yyyy")</td>
+
+                            <td>
+
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="@Url.Action("Edit","Doctors",new{id=doctor.Id})"
+                                           class="btn btn-warning btn-sm">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </a>
+                                    }
+
+                                    <a href="@Url.Action("Details","Doctors",new{id=doctor.Id})"
+                                       class="btn btn-info btn-sm text-white">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="@Url.Action("Delete","Doctors",new{id=doctor.Id})"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mt-4">
+
+    @if (Model.HasPreviousPage)
+    {
+        <a href="#" class="btn btn-outline-primary me-2 page-link"
+           data-page="@(Model.PageNumber-1)">◀ Previous</a>
+    }
+    else
+    {
+        <span class="btn btn-outline-secondary disabled me-2">◀ Previous</span>
+    }
+
+    <span class="fw-bold mx-2">Page @Model.PageNumber of @Model.PageCount</span>
+
+    @if (Model.HasNextPage)
+    {
+        <a href="#" class="btn btn-outline-primary ms-2 page-link"
+           data-page="@(Model.PageNumber+1)">Next ▶</a>
+    }
+    else
+    {
+        <span class="btn btn-outline-secondary disabled ms-2">Next ▶</span>
+    }
+
+</div>

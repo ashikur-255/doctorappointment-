@@ -1,0 +1,88 @@
+﻿@model DoctorAppointmentSystem.Models.Appointment
+
+@{
+    ViewBag.Title = "Edit Appointment";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-pencil-square"></i> Edit Appointment
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.DoctorId, "Doctor", new { @class = "form-label fw-bold" })
+                        @Html.DropDownList("DoctorId", null, "-- Select Doctor --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.DoctorId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.PatientId, "Patient", new { @class = "form-label fw-bold" })
+                        @Html.DropDownList("PatientId", null, "-- Select Patient --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.PatientId, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.AppointmentDate, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(model => model.AppointmentDate,
+                            "{0:yyyy-MM-ddTHH:mm}",
+                            new { @class = "form-control", type = "datetime-local" })
+                        @Html.ValidationMessageFor(model => model.AppointmentDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-bold">Appointment Status</label>
+
+                        <div class="form-check form-switch fs-5">
+                            @Html.CheckBoxFor(model => model.IsConfirmed, new { @class = "form-check-input" })
+                            <label class="form-check-label">
+                                Confirm Appointment
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Save Changes
+                    </button>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

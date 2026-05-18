@@ -1,0 +1,267 @@
+﻿@model DoctorAppointmentSystem.Models.Payment
+
+@{
+    ViewBag.Title = "Payment";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <!-- HEADER -->
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-credit-card"></i> Secure Payment</h5>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="p-3">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+        </div>
+
+        <div class="card-body">
+
+            @using (Html.BeginForm("Create", "Payments", FormMethod.Post, new { id = "paymentForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.AppointmentId)
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <!-- PAYMENT METHOD -->
+                <div class="mb-4">
+                    <label class="fw-bold mb-3">Select Payment Method</label>
+
+                    <div class="row g-3">
+
+                        <!-- CASH -->
+                        <div class="col-md-3">
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Cash" required />
+                                <img src="~/Images/cash.png" />
+                                <span>Cash</span>
+                            </label>
+                        </div>
+
+                        <!-- BKASH -->
+                        <div class="col-md-3">
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Bkash" />
+                                <img src="~/Images/bkash.png" />
+                                <span>Bkash</span>
+                            </label>
+
+                            <div class="qr-section" id="bkashQR">
+                                <p>Send money to:</p>
+                                <strong id="bkashNumber">01708588330</strong><br />
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="copyText('bkashNumber')">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- NAGAD -->
+                        <div class="col-md-3">
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Nagad" />
+                                <img src="~/Images/nagad.png" />
+                                <span>Nagad</span>
+                            </label>
+
+                            <div class="qr-section" id="nagadQR">
+                                <p>Send money to:</p>
+                                <strong id="nagadNumber">01708588330</strong><br />
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="copyText('nagadNumber')">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- CARD -->
+                        <div class="col-md-3">
+                            <label class="payment-option">
+                                <input type="radio" name="PaymentMethod" value="Card" />
+                                <img src="~/Images/Mastercard.png" />
+                                <span>Card</span>
+                            </label>
+
+                            <div class="qr-section" id="cardInfo">
+                                <p>Click below to pay online:</p>
+                                <a href="https://paypal.me/MRahman392" target="_blank" class="btn btn-primary btn-sm">
+                                    Pay with Card
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TRANSACTION -->
+                <div class="mb-4" id="transactionSection" style="display:none;">
+                    <label class="fw-bold">Transaction ID</label>
+                    @Html.TextBoxFor(m => m.TransactionId, new { @class = "form-control", placeholder = "Enter Transaction ID" })
+                </div>
+
+                <!-- AMOUNT (FIXED) -->
+                <div class="mb-4">
+                    <label class="fw-bold">Amount (BDT)</label>
+                    <input type="text"
+                           name="Amount"
+                           id="amountField"
+                           value="@Model.Amount"
+                           class="form-control"
+                           readonly />
+                </div>
+
+                <!-- SUBMIT -->
+                <button type="submit" class="btn btn-success btn-lg w-100" id="payBtn">
+                    <i class="bi bi-shield-check"></i> Confirm Payment
+                </button>
+            }
+
+        </div>
+    </div>
+</div>
+
+<!-- STYLE -->
+<style>
+    .payment-option {
+        border: 2px solid #eee;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+    }
+
+        .payment-option img {
+            height: 45px;
+            margin-bottom: 8px;
+        }
+
+        .payment-option input {
+            display: none;
+        }
+
+        .payment-option span {
+            display: block;
+            font-weight: 600;
+        }
+
+        .payment-option.active {
+            border-color: #28a745;
+            box-shadow: 0 0 10px rgba(40,167,69,0.3);
+        }
+
+    .qr-section {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #f8f9fa;
+        text-align: center;
+    }
+</style>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            // Payment method UI
+            $("input[name='PaymentMethod']").change(function () {
+
+                $(".payment-option").removeClass("active");
+                $(this).closest(".payment-option").addClass("active");
+
+                $(".qr-section").hide();
+                $("#transactionSection").hide();
+
+                let method = $(this).val();
+
+                if (method === "Bkash") {
+                    $("#bkashQR").fadeIn();
+                    $("#transactionSection").fadeIn();
+                }
+                else if (method === "Nagad") {
+                    $("#nagadQR").fadeIn();
+                    $("#transactionSection").fadeIn();
+                }
+                else if (method === "Card") {
+                    $("#cardInfo").fadeIn();
+                    $("#transactionSection").fadeIn();
+                }
+            });
+
+            // AJAX SUBMIT
+            $("#paymentForm").submit(function (e) {
+
+                e.preventDefault();
+
+                let form = $(this);
+
+                $("#payBtn").prop("disabled", true).html("Processing...");
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (res) {
+
+                        if (res.success) {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payment Successful',
+                                text: res.message
+                            }).then(() => {
+                                window.location.href = res.redirectUrl;
+                            });
+
+                        } else {
+
+                            $("#payBtn").prop("disabled", false).html("Confirm Payment");
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: res.message
+                            });
+                        }
+                    },
+                    error: function () {
+
+                        $("#payBtn").prop("disabled", false).html("Confirm Payment");
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Server Error',
+                            text: 'Something went wrong!'
+                        });
+                    }
+                });
+
+            });
+
+        });
+
+        function copyText(id) {
+            let text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Copied!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
+}

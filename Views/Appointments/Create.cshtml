@@ -1,0 +1,351 @@
+﻿@model DoctorAppointmentSystem.Models.AppointmentCreateVM
+
+@{
+    ViewBag.Title = "Book Doctor Appointment";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 main-card">
+
+        <!-- HEADER -->
+        <div class="card-header header-gradient text-white text-center py-4">
+            <h3><i class="bi bi-calendar-check me-2"></i>Book Doctor Appointment</h3>
+        </div>
+
+        <div class="card-body p-5">
+            @using (Html.BeginForm("Create", "Appointments", FormMethod.Post, new { id = "appointmentForm" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <!-- DOCTOR & SCHEDULE -->
+                <h5 class="section-title">Doctor & Schedule</h5>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Doctor</label>
+                        @Html.DropDownListFor(m => m.DoctorId,
+                            (SelectList)ViewBag.DoctorId,
+                            "-- Select Doctor --",
+                            new { @class = "form-select modern-input", id = "doctorSelect" })
+                        @Html.ValidationMessageFor(m => m.DoctorId, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Date & Time</label>
+                        @Html.TextBoxFor(m => m.AppointmentDate,
+                            new
+                            {
+                                @class = "form-control modern-input",
+                                type = "datetime-local",
+                                value = Model.AppointmentDate == default(DateTime)
+                                    ? DateTime.Now.ToString("yyyy-MM-ddTHH:mm")
+                                    : Model.AppointmentDate.ToString("yyyy-MM-ddTHH:mm")
+                            })
+                        @Html.ValidationMessageFor(m => m.AppointmentDate, "", new { @class = "text-danger small" })
+                    </div>
+                </div>
+
+                <!-- ADMIN STATUS -->
+                if (User.IsInRole("Admin"))
+                {
+                    <div class="mb-4">
+                        <label class="form-label text-primary">Status</label>
+                        @Html.DropDownListFor(m => m.Status,
+                            new SelectList(new[] { "Pending", "Confirmed" }, Model.Status),
+                            "-- Select Status --",
+                            new { @class = "form-select modern-input w-25" })
+                        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger small" })
+                    </div>
+                }
+
+                <!-- DOCTOR CARD -->
+                <div id="doctorDetails" class="doctor-premium-card mb-5" style="display:none;">
+                    <div class="row align-items-center g-4">
+                        <div class="col-md-3 text-center">
+                            <div class="doctor-img-wrapper">
+                                <img id="doctorImage" class="doctor-img" src="~/Images/Doctors/default.png" />
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h4 id="doctorName" class="fw-bold text-gradient mb-2"></h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="info-box">
+                                        <i class="bi bi-briefcase"></i>
+                                        <div>
+                                            <small>Specialization</small>
+                                            <p id="doctorSpecialization"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-box">
+                                        <i class="bi bi-mortarboard"></i>
+                                        <div>
+                                            <small>Degree</small>
+                                            <p id="doctorDegree"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-box">
+                                        <i class="bi bi-award"></i>
+                                        <div>
+                                            <small>Experience</small>
+                                            <p id="doctorExperience"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-box highlight">
+                                        <i class="bi bi-cash-coin"></i>
+                                        <div>
+                                            <small>Consultation Fee</small>
+                                            <p id="doctorFee"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PATIENT INFO -->
+                <h5 class="section-title text-center mb-4">
+                    <i class="bi bi-person-lines-fill me-2"></i>Patient Information
+                </h5>
+                <div class="patient-glass-card p-4 mb-4">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-person"></i>
+                                @Html.TextBoxFor(m => m.PatientName, new { @class = "form-control floating-input", placeholder = " " })
+                                <label>Full Name</label>
+                                @Html.ValidationMessageFor(m => m.PatientName, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-telephone"></i>
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control floating-input", placeholder = " " })
+                                <label>Phone</label>
+                                @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-envelope"></i>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control floating-input", placeholder = " ", type = "email" })
+                                <label>Email</label>
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-123"></i>
+                                @Html.TextBoxFor(m => m.Age, new { @class = "form-control floating-input", type = "number", placeholder = " " })
+                                <label>Age</label>
+                                @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-gender-ambiguous"></i>
+                                @Html.DropDownListFor(m => m.Gender,
+                                    new SelectList(new[] { "Male", "Female", "Other" }, Model.Gender),
+                                    "Gender",
+                                    new { @class = "form-select floating-input" })
+                                @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="floating-group">
+                                <i class="bi bi-chat-left-text"></i>
+                                @Html.TextAreaFor(m => m.Notes, new { @class = "form-control floating-input", rows = 1, placeholder = " " })
+                                <label>Notes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TERMS -->
+                <div class="form-check mb-4">
+                    @Html.CheckBoxFor(m => m.AgreeTerms, new { @class = "form-check-input", id = "agreeTerms" })
+                    <label class="form-check-label" for="agreeTerms">I agree to Terms</label>
+                    @Html.ValidationMessageFor(m => m.AgreeTerms, "", new { @class = "text-danger small" })
+                </div>
+
+                <!-- SUBMIT -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5" id="submitBtn">
+                        <span id="btnText">Confirm Appointment</span>
+                        <span id="loader" class="spinner-border spinner-border-sm d-none"></span>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        // ==============================
+        // LOAD DOCTOR DETAILS
+        // ==============================
+        $('#doctorSelect').change(function () {
+            var doctorId = $(this).val();
+            if (doctorId) {
+                $.get('@Url.Action("GetDoctorDetails","Appointments")', { doctorId: doctorId }, function (data) {
+                    if (data.success) {
+                        $('#doctorDetails').fadeIn();
+                        $('#doctorName').text(data.name);
+                        $('#doctorSpecialization').text(data.specialization);
+                        $('#doctorExperience').text(data.experience);
+                        $('#doctorFee').text(data.fee);
+                        $('#doctorImage').attr('src', data.imagePath);
+                        $('#doctorDegree').text(data.degree); // ✅ added
+                    }
+                });
+            } else {
+                $('#doctorDetails').hide();
+            }
+        });
+
+        // ==============================
+        // FORM SUBMIT HANDLER
+        // ==============================
+        $('#appointmentForm').submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            // Validation check
+            if (!form.valid() || !$('#agreeTerms').is(':checked')) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Form Incomplete',
+                    text: 'Please fill all required fields and agree to Terms!'
+                });
+                return false;
+            }
+
+            // Confirmation dialog
+            Swal.fire({
+                title: 'Confirm Appointment?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Confirm',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    // UI loading state
+                    $('#submitBtn').prop('disabled', true);
+                    $('#btnText').text('Processing...');
+                    $('#loader').removeClass('d-none');
+
+                    // Submit form normally (server will handle redirect)
+                    form.off('submit'); // prevent loop
+                    form.submit();
+                }
+            });
+        });
+    </script>
+}
+
+<style>
+    .header-gradient {
+        background: linear-gradient(135deg,#4e73df,#224abe);
+    }
+
+    .main-card {
+        border-radius: 18px;
+    }
+
+    .section-title {
+        color: #4e73df;
+        font-weight: 600;
+    }
+
+    .modern-input {
+        height: 50px;
+        border-radius: 10px;
+    }
+
+    .doctor-premium-card {
+        background: linear-gradient(135deg,#f8f9ff,#eef2ff);
+        border-radius: 18px;
+        padding: 25px;
+    }
+
+    .doctor-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+    }
+
+    .info-box {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: #fff;
+        border-radius: 10px;
+    }
+
+        .info-box.highlight {
+            background: #4e73df;
+            color: #fff;
+        }
+
+    .patient-glass-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+    }
+
+    .floating-group {
+        position: relative;
+    }
+
+        .floating-group i {
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            color: #777;
+        }
+
+    .floating-input {
+        height: 55px;
+        padding-left: 35px;
+        border-radius: 10px;
+    }
+
+    .floating-group label {
+        position: absolute;
+        left: 35px;
+        top: 15px;
+        font-size: 14px;
+        color: #888;
+    }
+
+    .floating-input:focus + label, .floating-input:not(:placeholder-shown) + label {
+        top: -8px;
+        font-size: 12px;
+        background: #fff;
+        color: #4e73df;
+    }
+
+    .is-invalid {
+        border: 1px solid red !important;
+    }
+</style>

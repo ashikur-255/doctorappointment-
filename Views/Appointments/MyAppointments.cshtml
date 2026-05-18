@@ -1,0 +1,69 @@
+﻿@model PagedList.IPagedList<DoctorAppointmentSystem.Models.Appointment>
+
+@{
+    ViewBag.Title = "My Appointments";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body bg-success text-white rounded">
+            <h3 class="mb-0">
+                📋 My Appointment History
+            </h3>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body p-0">
+
+            <table class="table table-hover mb-0">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-center">
+                    @if (Model.Any())
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@(item.Doctor?.Name ?? "N/A")</td>
+                                <td>@item.AppointmentDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                <td>
+                                    @if (item.IsConfirmed)
+                                    {
+                                        <span class="badge bg-success">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    }
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-danger p-4">
+                                🚫 No appointments found
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>

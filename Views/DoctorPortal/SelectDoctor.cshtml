@@ -1,0 +1,139 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Doctor Portal";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: #f4f7fc;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .header-box {
+        background: linear-gradient(90deg, #0d6efd, #4dabf7);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+    }
+
+    .logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        height: 45px;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 8px rgba(13,110,253,0.3);
+            border-color: #0d6efd;
+        }
+
+    .btn-submit {
+        border-radius: 30px;
+        padding: 10px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card card-custom">
+
+                <!-- HEADER -->
+                <div class="header-box">
+                    <img src="~/Images/HospitalLogo.png" class="logo" alt="Logo" />
+                    <h4 class="mb-0">Doctor Portal</h4>
+                    <small>Enter your Registration Number</small>
+                </div>
+
+                <!-- BODY -->
+                <div class="card-body p-4">
+
+                    @using (Html.BeginForm("SelectDoctor", "DoctorPortal", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            @Html.Label("Registration Number", new { @class = "form-label fw-semibold" })
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+
+                                @Html.TextBox("regNo", null, new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your Registration Number",
+                                    required = "required"
+                                })
+                            </div>
+
+                            <div class="invalid-feedback">
+                                Registration Number is required
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-submit w-100">
+                            <i class="bi bi-arrow-right-circle"></i> Continue
+                        </button>
+
+                        if (!string.IsNullOrEmpty(ViewBag.Error as string))
+                        {
+                            <div class="alert alert-danger mt-3">
+                                @ViewBag.Error
+                            </div>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Bootstrap validation
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+        })();
+    </script>
+}

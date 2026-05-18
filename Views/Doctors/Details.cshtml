@@ -1,0 +1,116 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+
+@{
+    ViewBag.Title = "Doctor Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-info text-white">
+            <h4><i class="bi bi-person-badge"></i> Doctor Details</h4>
+        </div>
+
+        <div class="card-body row">
+
+            <!-- Doctor Image -->
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <img src="@Url.Content(Model.ImagePath)"
+                         class="img-fluid img-thumbnail mb-3 rounded shadow-sm"
+                         alt="Doctor Photo" />
+                }
+                else
+                {
+                    <img src="~/Images/placeholder-doctor.png"
+                         class="img-fluid img-thumbnail mb-3 rounded shadow-sm"
+                         alt="Doctor Photo" />
+                }
+            </div>
+
+            <!-- Doctor Info -->
+            <div class="col-md-8">
+                <dl class="row">
+
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+                    <dt class="col-sm-4">Hospital Name</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.HospitalName)</dd>
+
+                    <dt class="col-sm-4">Registration No</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.RegistrationNo)</dd>
+
+                    <dt class="col-sm-4">Degree</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Degree)</dd>
+
+                    <dt class="col-sm-4">Specialization</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Specialization.Name)</dd>
+
+                    <dt class="col-sm-4">Experience (Years)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ExperienceYears)</dd>
+
+                    <dt class="col-sm-4">Consultation Fee</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ConsultationFee)</dd>
+
+                    <dt class="col-sm-4">Availability</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.IsAvailable)
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Not Available</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Visited Time</dt>
+                    <dd class="col-sm-8">
+                        @(Model.VisitedTime.HasValue
+                            ? DateTime.Today.Add(Model.VisitedTime.Value).ToString("hh:mm tt")
+                            : "N/A")
+                    </dd>
+
+                    <dt class="col-sm-4">Joining Date</dt>
+                    <dd class="col-sm-8">@Model.JoiningDate.ToString("dd MMM yyyy")</dd>
+
+                </dl>
+
+                <!-- Buttons -->
+                <div class="mt-4">
+
+                    <!-- Book Appointment Button -->
+                    @Html.ActionLink(
+                        "Book Now",
+                        "Create",
+                        "Appointments",
+                        new { doctorId = Model.Id },
+                        new { @class = "btn btn-success me-2" }
+                    )
+
+                    <!-- Edit Button Only Admin -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink(
+                            "Edit",
+                            "Edit",
+                            new { id = Model.Id },
+                            new { @class = "btn btn-warning me-2" }
+                        )
+                    }
+
+                    <!-- Back Button -->
+                    @Html.ActionLink(
+                        "Back to List",
+                        "Index",
+                        null,
+                        new { @class = "btn btn-secondary" }
+                    )
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

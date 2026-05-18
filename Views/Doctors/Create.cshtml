@@ -1,0 +1,131 @@
+﻿@model DoctorAppointmentSystem.Models.Doctor
+
+@{
+    ViewBag.Title = "Create Doctor";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="bi bi-person-plus"></i> Create New Doctor</h4>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Create", "Doctors", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <!-- Name -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Experience Years -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.ExperienceYears, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.ExperienceYears, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ExperienceYears, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Consultation Fee -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.ConsultationFee, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.ConsultationFee, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ConsultationFee, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Availability -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.IsAvailable, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.IsAvailable, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="IsAvailable">Available</label>
+                            @Html.ValidationMessageFor(model => model.IsAvailable, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Joining Date -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.JoiningDate, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.JoiningDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.JoiningDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Visited Time -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.VisitedTime, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.VisitedTime, new { htmlAttributes = new { @class = "form-control", type = "time" } })
+                        @Html.ValidationMessageFor(model => model.VisitedTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Hospital Name -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.HospitalName, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.HospitalName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HospitalName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Registration Number -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.RegistrationNo, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.RegistrationNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RegistrationNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Degree -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.Degree, htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.EditorFor(model => model.Degree, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Degree, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Upload Photo -->
+                <div class="mb-3 row">
+                    @Html.Label("Upload Photo", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        <input type="file" name="imageFile" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Specialization -->
+                <div class="mb-3 row">
+                    @Html.LabelFor(model => model.SpecializationId, "Specialization", htmlAttributes: new { @class = "col-sm-2 col-form-label" })
+                    <div class="col-sm-10">
+                        @Html.DropDownList("SpecializationId", (SelectList)ViewBag.SpecializationId, "-- Select Specialization --", new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.SpecializationId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-start">
+                    <input type="submit" value="Create Doctor" class="btn btn-success me-2" />
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

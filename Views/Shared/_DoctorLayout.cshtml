@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #1e293b;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+            .sidebar a {
+                display: block;
+                color: white;
+                padding: 10px;
+                margin-bottom: 8px;
+                text-decoration: none;
+                border-radius: 6px;
+            }
+
+                .sidebar a:hover {
+                    background: #3b82f6;
+                }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            background: #f8fafc;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <h4 class="mb-4">Doctor Portal</h4>
+
+        <p>Dr. @Session["DoctorName"]</p>
+
+        <hr>
+
+        <a href="/DoctorPortal/Dashboard">Today's Queue</a>
+
+        <a href="/DoctorPortal/History">Visited History</a>
+
+        <a href="/DoctorPortal/Profile">Doctor Profile</a>
+
+        <a href="/DoctorAccount/Logout" class="text-danger">Logout</a>
+
+    </div>
+
+    <div class="content">
+
+        @RenderBody()
+
+    </div>
+
+</body>
+
+</html>

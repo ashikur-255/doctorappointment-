@@ -1,0 +1,92 @@
+﻿@model PagedList.IPagedList<DoctorAppointmentSystem.Models.Patient>
+
+<div class="card shadow border-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle text-center mb-0">
+            <thead style="background:#ffd800;color:#0d6efd">
+                <tr>
+                    <th>#</th>
+                    <th>@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Blood Group</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Disease</th>
+                    <th width="250">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="9" class="text-center p-5 text-muted">
+                            <i class="bi bi-exclamation-circle" style="font-size:36px"></i>
+                            <h5 class="mt-2">No patients found</h5>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    int i = 1;
+                    foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td class="fw-bold text-primary">@patient.Name</td>
+                            <td>@patient.Age</td>
+                            <td>@patient.Gender</td>
+                            <td>@patient.BloodGroup</td>
+                            <td><span class="badge bg-info">@patient.Phone</span></td>
+                            <td>@patient.Email</td>
+                            <td>@patient.DiseaseDetails</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="@Url.Action("Edit", new { id = patient.Id })"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a href="@Url.Action("Details", new { id = patient.Id })"
+                                       class="btn btn-info btn-sm text-white">
+                                        <i class="bi bi-eye-fill"></i> Details
+                                    </a>
+                                    <a href="@Url.Action("Delete", new { id = patient.Id })"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Are you sure you want to delete this patient?');">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== PAGINATION ===== -->
+    <div class="d-flex justify-content-center align-items-center mt-4">
+        @if (Model.HasPreviousPage)
+        {
+            <a href="@Url.Action("Index", new { page = Model.PageNumber - 1 })"
+               class="page-link btn btn-outline-primary me-2">◀ Previous</a>
+        }
+        else
+        {
+            <span class="btn btn-outline-secondary disabled me-2">◀ Previous</span>
+        }
+
+        <span class="fw-bold mx-2">Page @Model.PageNumber of @Model.PageCount</span>
+
+        @if (Model.HasNextPage)
+        {
+            <a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })"
+               class="page-link btn btn-outline-primary ms-2">Next ▶</a>
+        }
+        else
+        {
+            <span class="btn btn-outline-secondary disabled ms-2">Next ▶</span>
+        }
+    </div>
+</div>

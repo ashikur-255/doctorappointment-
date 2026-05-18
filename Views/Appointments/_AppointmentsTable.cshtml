@@ -1,0 +1,96 @@
+﻿@model PagedList.IPagedList<DoctorAppointmentSystem.Models.Appointment>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle text-center mb-0">
+        <thead class="table-warning">
+            <tr>
+                <th>#</th>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>
+                    <a href="#" class="sort-link" data-sort="@ViewBag.DateSort">
+                        Date & Time <i class="bi bi-arrow-down-up"></i>
+                    </a>
+                </th>
+                <th>Status</th>
+                <th width="220">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="p-4 text-muted">No appointments found</td>
+                </tr>
+            }
+            else
+            {
+                int i = (Model.PageNumber - 1) * Model.PageSize + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td class="fw-semibold text-primary">
+                            <i class="bi bi-person-badge"></i>
+                            @(item.Doctor?.Name ?? "N/A")
+                        </td>
+                        <td>
+                            <i class="bi bi-person"></i>
+                            @(item.Patient?.Name ?? "N/A")
+                        </td>
+                        <td>
+                            <span class="badge bg-info text-dark fs-6">
+                                @item.AppointmentDate.ToString("dd MMM yyyy hh:mm tt")
+                            </span>
+                        </td>
+                        <td>
+                            @if (item.IsConfirmed)
+                            {
+                                <span class="badge bg-success px-3 py-2">Confirmed</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark px-3 py-2">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-info btn-sm text-white">
+                                Details
+                            </a>
+                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center align-items-center mt-3">
+        @if (Model.HasPreviousPage)
+        {
+            <a href="#" class="page-link me-2" data-page="@(Model.PageNumber - 1)">◀ Previous</a>
+        }
+        else
+        {
+            <span class="btn btn-outline-secondary disabled me-2">◀ Previous</span>
+        }
+
+        <span class="fw-bold mx-2">Page @Model.PageNumber of @Model.PageCount</span>
+
+        @if (Model.HasNextPage)
+        {
+            <a href="#" class="page-link ms-2" data-page="@(Model.PageNumber + 1)">Next ▶</a>
+        }
+        else
+        {
+            <span class="btn btn-outline-secondary disabled ms-2">Next ▶</span>
+        }
+    </div>
+</div>
