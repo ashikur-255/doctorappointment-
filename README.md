@@ -1,2 +1,39 @@
-# doctorappointment-
-Here we can add multiple doctor against multiple patient. Also use here authenticationa and authorization and much more.
+Doctor Appointment System Flow Chart:
+
+Start
+│
+▼
+User Registration / Login
+│
+▼
+Search Doctor
+│
+▼
+View Doctor Details & Available Slots
+│
+▼
+Select Date and Time
+│
+▼
+Book Appointment
+│
+▼
+Appointment Confirmation
+│
+▼
+Doctor Reviews Appointment
+│
+▼
+Appointment Approved / Rejected
+│
+▼
+Patient Receives Notification
+│
+▼
+Attend Appointment
+│
+▼
+Update Appointment Status
+│
+▼
+End
